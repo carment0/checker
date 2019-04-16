@@ -72,7 +72,7 @@ function canMove(board, start, end, player = 1, boardSize = BOARD_SIZE) {
         const colBetween = jump[1] / 2;
         const valueBetween = currentBoard[currentPos[0] + rowBetween][currentPos[1] + colBetween];
 
-        if (newValuePos === 0 && valueBetween !== player && isBound) {
+        if (newValuePos === 0 && valueBetween !== player && valueBetween !== 0 && isBound) {
           if (row === end[0] && col === end[1]){
             endFound = true;
           }
