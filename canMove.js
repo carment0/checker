@@ -11,7 +11,7 @@ const BOARD_SIZE = 5;
 function canMove(board, start, end, player = 1, boardSize = BOARD_SIZE) {
   let twoDBoard = create2DBoard(board, boardSize);
 
-  //Check if START is the correct player
+  // Check if START is the correct player
   if (twoDBoard[start[0]][start[1]] !== player) return new Error('Start position is not players token!');
 
   // Check if START is END 
@@ -32,8 +32,8 @@ function canMove(board, start, end, player = 1, boardSize = BOARD_SIZE) {
   if (value !== 0) return new Error('End position is already used!')
 
   // Check if diagonal positions is the END position
-  const diagsPlayer1 = [[-1, 1], [-1, -1]]; // tokens can only moving up
-  const diagsPlayer2 = [[1, 1], [1, -1]]; // tokens can only moving down
+  const diagsPlayer1 = [[-1, 1], [-1, -1]]; // tokens can only move up
+  const diagsPlayer2 = [[1, 1], [1, -1]]; // tokens can only move down
   let diags;
   if (player === 1) {
     diags = diagsPlayer1;
