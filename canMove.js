@@ -32,28 +32,36 @@ function canMove(board, start, end, player = 1, boardSize = BOARD_SIZE) {
   if (value !== 0) return new Error('End position is already used!')
 
   // Check if diagonal positions is the END position
-  const diags = [[1, 1], [1, -1]];
+  const diagsPlayer1 = [[-1, 1], [-1, -1]]; // tokens can only moving up
+  const diagsPlayer2 = [[1, 1], [1, -1]]; // tokens can only moving down
+  let diags;
+  if (player === 1) {
+    diags = diagsPlayer1;
+  } else {
+    diags = diagsPlayer2;
+  }
+
+  let endFound = false;
   diags.forEach(diag => {
     const row = diag[0] + start[0];
     const col = diag[1] + start[1];
     const isBound = isInBounds(boardSize, [row, col])
     if (isBound) {
       const newValuePos = twoDBoard[row][col];
-      if (newValuePos === 0 && isBound && row === start[0] && col === start[1]) {
-        return true;
+      if (newValuePos === 0 && isBound && row === end[0] && col === end[1]) {
+        endFound = true;
       }
     }
   })
 
   // Check if diagonal jump position is the END position
+  // token can move all four diagonal directions
   const diagJumps = [[2, 2], [2, -2], [-2, 2], [-2, -2]];
 
   const stack = [{
     position: start,
     board: twoDBoard
   }];
-
-  let endFound = false;
 
   while (stack.length !== 0 && !endFound) {
     const currentGame = stack.pop();
@@ -176,9 +184,20 @@ const tests = { test_case_1: function() {
       0, 0, 0, 0, 0
     ]
     actual = canMove(board, start=[2, 1], end=[1, 0], player=1)
-    assert.equal(actual, false);
+    assert.equal(actual, true);
   },
   test_case_4: function() {
+    board = [
+      0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0,
+      0, 2, 0, 0, 0,
+      0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0
+    ]
+    actual = canMove(board, start=[2, 1], end=[3, 0], player=2)
+    assert.equal(actual, true)
+  },
+  test_case_5: function() {
     board = [
       0, 0, 0, 0, 0,
       0, 1, 0, 1, 0,
@@ -196,7 +215,7 @@ function testCanMove() {
   for (let test in tests) {
     try {
       tests[test]();
-      console.log(`${test} Passed.`);
+      console.log('Passed.');
     } catch (error) {
       console.log(error.message);
     }
