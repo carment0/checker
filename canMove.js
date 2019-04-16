@@ -142,32 +142,64 @@ let assert = {
   equal: function(firstValue, secondValue) {
     if (firstValue != secondValue) 
       throw new Error('Assert failed, ' + firstValue + ' is not equal to ' + secondValue + '.');
-  }
+  },
 };
 
+const tests = { test_case_1: function() {
+    board = [
+      0, 0, 0, 0, 0,
+      1, 0, 0, 0, 0,
+      0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0
+    ]
+    actual = canMove(board, start=[1, 0], end=[0, 0], player=1);
+    assert.equal(actual, false);
+  },
+  test_case_2: function() {
+    board = [
+      0, 0, 0, 0, 0,
+      0, 0, 2, 0, 0,
+      0, 1, 0, 0, 0,
+      0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0
+    ]
+    actual = canMove(board, start=[2, 1], end=[0, 3], player=1)
+    assert.equal(actual, true)
+  },
+  test_case_3: function() {
+    board = [
+      0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0,
+      0, 1, 0, 0, 0,
+      0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0
+    ]
+    actual = canMove(board, start=[2, 1], end=[1, 0], player=1)
+    assert.equal(actual, false);
+  },
+  test_case_4: function() {
+    board = [
+      0, 0, 0, 0, 0,
+      0, 1, 0, 1, 0,
+      2, 0, 0, 0, 0,
+      0, 0, 0, 1, 0,
+      0, 0, 0, 0, 0
+    ]
+    actual = canMove(board, start=[2, 0], end=[4, 2], player=2)
+    assert.equal(actual, true)
+  }
+}
+
+
 function testCanMove() {
-  const board = [ 0, 0, 0, 0, 0,
-                  0, 2, 0, 2, 0,
-                  1, 0, 0, 0, 0,
-                  0, 0, 0, 2, 0,
-                  0, 0, 0, 0, 0
-                ]
-  const start = [2, 0];
-  const end = [4, 2];
-  const success = true;
-  const failure = false;
-
-  const isMovePossible = canMove(board, start, end);
-
-  console.log('canMove() should return a boolean indicting if a checker piece can make a valid move from start to end.');
-  console.log('Expect ' + isMovePossible + ' to equal ' + success + '.');
-  
-  try {
-    assert.equal(isMovePossible, success);
-    
-    console.log('Passed.');
-  } catch (error) {
-    console.log(error.message);
+  for (let test in tests) {
+    try {
+      tests[test]();
+      console.log(`${test} Passed.`);
+    } catch (error) {
+      console.log(error.message);
+    }
   }
 }
 
