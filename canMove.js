@@ -1,4 +1,12 @@
 const BOARD_SIZE = 5;
+
+const DIAGONALS = {
+  1: [[-1, 1], [-1, -1]], // token can only moving up
+  2: [[1, 1], [1, -1]] // token can only moving down
+} 
+
+const JUMP_DIAGONALS = [[2, 2], [2, -2], [-2, 2], [-2, -2]]; // token can move all four diagonal directions
+
 /**
  * 
  * @param {number[]} board 
@@ -11,7 +19,7 @@ const BOARD_SIZE = 5;
 function canMove(board, start, end, player = 1, boardSize = BOARD_SIZE) {
   let twoDBoard = create2DBoard(board, boardSize);
 
-  // Check if START is the correct player
+  //Check if START is the correct player
   if (twoDBoard[start[0]][start[1]] !== player) return new Error('Start position is not players token!');
 
   // Check if START is END 
@@ -32,14 +40,7 @@ function canMove(board, start, end, player = 1, boardSize = BOARD_SIZE) {
   if (value !== 0) return new Error('End position is already used!')
 
   // Check if diagonal positions is the END position
-  const diagsPlayer1 = [[-1, 1], [-1, -1]]; // tokens can only move up
-  const diagsPlayer2 = [[1, 1], [1, -1]]; // tokens can only move down
-  let diags;
-  if (player === 1) {
-    diags = diagsPlayer1;
-  } else {
-    diags = diagsPlayer2;
-  }
+  const diags = DIAGONALS[player];
 
   let endFound = false;
   diags.forEach(diag => {
@@ -55,9 +56,6 @@ function canMove(board, start, end, player = 1, boardSize = BOARD_SIZE) {
   })
 
   // Check if diagonal jump position is the END position
-  // token can move all four diagonal directions
-  const diagJumps = [[2, 2], [2, -2], [-2, 2], [-2, -2]];
-
   const stack = [{
     position: start,
     board: twoDBoard
@@ -68,7 +66,7 @@ function canMove(board, start, end, player = 1, boardSize = BOARD_SIZE) {
     const currentPos = currentGame.position;
     const currentBoard = currentGame.board;
     
-    diagJumps.forEach(jump => {
+    JUMP_DIAGONALS.forEach(jump => {
       const row = currentPos[0] + jump[0];
       const col = currentPos[1] + jump[1];
       const isBound = isInBounds(boardSize, [row, col])
@@ -209,7 +207,6 @@ const tests = { test_case_1: function() {
     assert.equal(actual, true)
   }
 }
-
 
 function testCanMove() {
   for (let test in tests) {
