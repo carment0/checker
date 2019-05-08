@@ -1,8 +1,8 @@
 const BOARD_SIZE = 5;
 
 const DIAGONALS = {
-  1: [[-1, 1], [-1, -1]], // token can only moving up
-  2: [[1, 1], [1, -1]] // token can only moving down
+  1: [[-1, 1], [-1, -1]], // token can only move up
+  2: [[1, 1], [1, -1]] // token can only move down
 } 
 
 const JUMP_DIAGONALS = [[2, 2], [2, -2], [-2, 2], [-2, -2]]; // token can move all four diagonal directions
